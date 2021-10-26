@@ -1,7 +1,7 @@
 {
   "name": "waveform-peaks-generator",
   "version": "1.0.0",
-  "description": "Express server to generate waveform peaks given mp3 url",
+  "description": "Node server to generate waveform peaks using audiowaveform given mp3 url",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js"

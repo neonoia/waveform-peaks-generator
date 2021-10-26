@@ -1,5 +1,5 @@
 # Waveform Peaks Generator
-Generate peaks data using [audiowaveform](https://github.com/bbc/audiowaveform).
+Node server to generate waveform peaks using [audiowaveform](https://github.com/bbc/audiowaveform) given mp3 url.
 
 ### Parameter
 **url** -  URL to the audio file that will be used for generating waveform peaks data
