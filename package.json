@@ -1,0 +1,21 @@
+{
+  "name": "waveform-peaks-generator",
+  "version": "1.0.0",
+  "description": "Express server to generate waveform peaks given mp3 url",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "keywords": [
+    "wavesurfer, audiowaveform, audio, nodejs, docker"
+  ],
+  "author": "Hafizh",
+  "dependencies": {
+    "express": "^4.17.1",
+    "multipart-download": "1.2.4",
+    "os": "0.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.4"
+  }
+}
