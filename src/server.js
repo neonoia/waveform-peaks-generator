@@ -50,14 +50,6 @@ app.listen(5005, () => {
       : console.log("Found Audiowaveform on path");
   });
 
-  exec("python -V", (error) => {
-    error
-      ? app.close(() => {
-          console.log("Python not on path. Closing server.");
-        })
-      : console.log("Found Python on path");
-  });
-
   !fs.existsSync(tempDir) &&
     fs.mkdir(tempDir, (error) => {
       error
@@ -89,29 +81,19 @@ function runAudiowaveform(response, filePath, tempDir) {
     " --pixels-per-second 20 --bits 8";
 
   execCmd(response, cmd, () => {
-    runScaleFile(response, outFile, () => {
-      cleanup(filePath);
-      cleanup(outFile);
-    });
-  });
-}
-
-function runScaleFile(response, audiowaveformJsonFile, callback) {
-  const cmd = "python ./src/scale.py " + audiowaveformJsonFile;
-
-  execCmd(response, cmd, () => {
-    fs.readFile(audiowaveformJsonFile, (error, data) => {
+    fs.readFile(outFile, (error, data) => {
       if (error) {
         handleError(response, error);
       } else {
-        console.log("Done generating waveform file: " + audiowaveformJsonFile);
+        console.log("Done generating waveform file: " + outFile);
         response.statusCode = 200;
         response.setHeader("Content-Type", "application/json");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.end(data);
       }
 
-      callback();
+      cleanup(filePath);
+      cleanup(outFile);
     });
   });
 }
