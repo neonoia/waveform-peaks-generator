@@ -1,5 +1,5 @@
 const { exec } = require("child_process");
-const MultipartDownload = require("multipart-download");
+const { DownloaderHelper } = require('node-downloader-helper');
 const os = require("os");
 const fs = require("fs");
 
@@ -23,16 +23,12 @@ router.post("/waveform", jsonParser, (req, res) => {
     const url = req.body.url;
     
     try {
-      new MultipartDownload()
-        .start(url, {
-          numOfConnections: 3,
-          saveDirectory: tempDir,
-          headers: { accept: "audio/*" },
-        })
-        .on("end", (filePath) => {
-          console.log("Downloaded file: " + filePath);
-          runAudiowaveform(res, filePath, tempDir);
-        });
+      const dl = new DownloaderHelper(url, tempDir);
+      dl.on('end', (result) => {
+        console.log("Downloaded file: " + result.filePath);
+        runAudiowaveform(res, result.filePath, tempDir);
+      })
+      dl.start();
     } catch (err) {
       handleError(res, err);
     }
