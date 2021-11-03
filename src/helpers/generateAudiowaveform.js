@@ -15,43 +15,41 @@ function getMax(arr) {
     return max;
 }
 
-const generateAudiowaveform = async function (filePath, tempDir, rates) {
-  const result = [];
+const generateAudiowaveform = async function (filePath, tempDir, pixelPerSecond) {
+  let result = {};
 
-  for (const rate of rates) {
-    const outFile = getOutFile(filePath, tempDir, rate);
-    const command = `audiowaveform -i ${filePath} -o ${outFile} --pixels-per-second ${rate} --bits 8`;
+  const outFile = getOutFile(filePath, tempDir, pixelPerSecond);
+  const command = `audiowaveform -i ${filePath} -o ${outFile} --pixels-per-second ${pixelPerSecond} --bits 8`;
 
-    try {
-      await executeCommand(command);
-      const buffer = await readFile(outFile);
+  try {
+    await executeCommand(command);
+    const buffer = await readFile(outFile);
 
-      if (buffer) {
-        console.log(
-          `Done generating waveform file: ${outFile} --pixels-per-second ${rate}`
-        );
+    if (buffer) {
+      console.log(
+        `Done generating waveform file: ${outFile} --pixels-per-second ${pixelPerSecond}`
+      );
 
-        // Normalize and filter peaks
-        const { data } = JSON.parse(buffer.toString());
-        const max = getMax(data);
-        const normalizedPeaks = data
-          .filter((_, index) => index % 2 !== 0);
+      // Normalize and filter peaks
+      const { data } = JSON.parse(buffer.toString());
+      const max = getMax(data);
+      const normalizedPeaks = data
+        .filter((_, index) => index % 2 !== 0);
 
-        for (let i = 0; i < normalizedPeaks.length; i++) {
-            normalizedPeaks[i] = Math.round((normalizedPeaks[i] / max) * 100) / 100;
-        }
-
-        result.push({
-          peaks: normalizedPeaks,
-          pixelPerSecond: rate,
-        });
-
-        // Cleanup generated file
-        await cleanupFile(outFile);
+      for (let i = 0; i < normalizedPeaks.length; i++) {
+        normalizedPeaks[i] = Math.round((normalizedPeaks[i] / max) * 100) / 100;
       }
-    } catch (error) {
-      console.log('here ' + error);
+
+      result = {
+        peaks: normalizedPeaks,
+        pixelPerSecond: pixelPerSecond,
+      };
+
+      // Cleanup genepixelPerSecondd file
+      await cleanupFile(outFile);
     }
+  } catch (error) {
+    console.log(error);
   }
 
   return result;

@@ -16,7 +16,7 @@ if (os.platform() != "win32") {
   tempDir = os.homedir() + "/audiowaveform-server";
 }
 
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
 app.use("/", router);
 
@@ -31,19 +31,18 @@ router.post("/waveform", jsonParser, (req, res) => {
     res.setHeader("Content-Type", "application/json");
     return res.end(errorMessage);
   };
-  
+
   if (!req.body.url || req.body.url === "") {
     return handleError('"url" parameter not found or invalid');
   }
 
-  if (!req.body.pixelPerSeconds) {
-    return handleError('"pixelPerSeconds" parameter not found');
+  if (!req.body.pixelPerSecond) {
+    return handleError('"pixelPerSecond" parameter not found');
   }
 
   // Extract parameter
   const url = req.body.url;
-  const pixelPerSeconds = req.body.pixelPerSeconds;
-  const rates = pixelPerSeconds.length ? pixelPerSeconds : [40];
+  const pixelPerSecond = req.body.pixelPerSecond;
 
   const handleDownloadEnded = async (result) => {
     try {
@@ -51,7 +50,7 @@ router.post("/waveform", jsonParser, (req, res) => {
       const generated = await generateAudiowaveform(
         result.filePath,
         tempDir,
-        rates
+        pixelPerSecond
       );
 
       // Cleanup downloaded file
