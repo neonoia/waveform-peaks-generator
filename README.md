@@ -1,11 +1,12 @@
 # Waveform Peaks Generator
-Node server to generate waveform peaks using [audiowaveform](https://github.com/bbc/audiowaveform) given mp3 url.
+Node server to generate waveform peaks using [audiowaveform](https://github.com/bbc/audiowaveform) given mp3 file.
 
 ### Parameter
-**url** -  URL to the audio file that will be used for generating waveform peaks data
+**file** -  Audio file that will be used for generating waveform peaks data
+**pixelPerSeconds** -  Generated peaks datapoint for each second
 
 ### Example Request
 
-`POST /waveform/`
+`POST /v1/waveform/`
 
-    curl --header "Content-Type: application/json" --request POST --data '{"url":"https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_5MG.mp3"}' http://localhost:5005/waveform
+    curl --verbose --request POST --header "Content-Type:multipart/form-data" --form "file=<example.mp3" --form "pixelPerSeconds=40"  http://127.0.0.1:5005
