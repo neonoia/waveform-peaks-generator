@@ -9,7 +9,7 @@ const envVarsSchema = Joi.object()
     NODE_ENV: Joi.string()
       .valid("production", "development", "test")
       .required(),
-    PORT: Joi.number().default(5005),
+    WAVEFORM_PEAKS_GENERATOR_PORT: Joi.number().default(5005),
   })
   .unknown();
 
@@ -23,5 +23,5 @@ if (error) {
 
 module.exports = {
   env: envVars.NODE_ENV,
-  port: envVars.PORT,
+  port: envVars.WAVEFORM_PEAKS_GENERATOR_PORT,
 };

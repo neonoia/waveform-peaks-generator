@@ -33,7 +33,7 @@ ENV NODE_ENV=production
 
 WORKDIR /
 
-COPY .env .
+COPY .env.example .env
 COPY package.json .
 COPY src /src
 
